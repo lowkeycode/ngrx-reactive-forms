@@ -1,0 +1,36 @@
+<div class="min-h-screen md:container md:mx-auto bg-slate-300 rounded-lg overflow-hidden shadow-lg shadow-slate-400">
+  <form [formGroup]="form">
+    <label class="block bg-slate-50 p-8">
+      <span class="block text-sm font-medium text-slate-700 text-2xl">Add Item</span>
+      <input formControlName="todo" class="border rounded border-slate-300 placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500 w-2/5 h-8 pl-2" placeholder="Do laundry..."/>
+      <p class="mt-2  text-slate-500 text-sm">
+        Add anything you can think of that you need to do.
+      </p>
+      <button type="button" class="bg-sky-500 hover:bg-sky-700 px-5 py-2 5 text-sm leading-5 rounded-md font-semibold text-white mt-2" (click)="addTodo()">Submit</button>
+    </label>
+  </form>
+  <form [formGroup]="editingForm">
+    <ul role="list" class="p-6 divide-y divide-slate-200" formArrayName="inputs">
+
+      <li *ngFor="let todo of allTodos$ | async; let i = index;" class="first:rounded-t-md last:rounded-b-md last:mb-2 odd:bg-white even:bg-slate-100 h-16" >
+        <div *ngIf="!todo.editing" class="p-4 h-full flex justify-between w-full overflow-hidden">
+          <p class="text-lg font-medium text-slate-900">{{ todo.content }}</p>
+          <span class="flex justify-between w-16">
+            <fa-icon [icon]="faEllipsisH" size="xl" class="hover:cursor-pointer" (click)="editTodo(todo)"></fa-icon>
+            <fa-icon [icon]="faXmark" size="xl" class="hover:cursor-pointer" (click)="deleteTodo(todo)"></fa-icon>
+          </span>
+        </div>
+        
+        <div *ngIf="todo.editing" class="p-4 h-full flex justify-between items-center w-full overflow-hidden" [formGroupName]="i">
+          <input class="border rounded border-slate-300 placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500 w-2/5 h-8 pl-2" placeholder="Do laundry..." formControlName="content"/>
+          <span class="flex justify-between w-16">
+            <fa-icon [icon]="faCheck" size="xl" class="hover:cursor-pointer" (click)="saveTodo(todo, i)"></fa-icon>
+            <fa-icon [icon]="faXmark" size="xl" class="hover:cursor-pointer" (click)="deleteTodo(todo)"></fa-icon>
+          </span>
+        </div>
+      </li>
+      
+  </ul>
+  </form>
+</div>
+
